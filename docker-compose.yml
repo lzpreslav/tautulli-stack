@@ -1,0 +1,31 @@
+---
+version: "3.9"
+
+services:
+  tautulli:
+    image: lscr.io/linuxserver/tautulli:${TAUTULLI_TAG:-2.9.5}
+    environment:
+      DOCKER_MODS: ${DOCKER_MODS:-linuxserver/mods:universal-stdout-logs}
+      LOGS_TO_STDOUT: ${LOGS_TO_STDOUT:-/config/logs/tautulli.log}
+      PGID: ${PGID:-1000}
+      PUID: ${PUID:-1000}
+      TZ: ${TZ:-Etc/UTC}
+    labels:
+      traefik.enable: true
+      traefik.http.routers.tautulli.entrypoints: websecure
+      traefik.http.routers.tautulli.middlewares: ${TRAEFIK_MIDDLEWARES:-}
+      traefik.http.routers.tautulli.rule: Host(`${TAUTULLI_HOSTNAME:-localhost}`)
+      traefik.http.routers.tautulli.service: tautulli
+      traefik.http.routers.tautulli.tls: true
+      traefik.http.services.tautulli.loadbalancer.server.port: 8181
+    networks:
+      - traefik
+    restart: unless-stopped
+    volumes:
+      - ${CONFIG_VOLUME:-config}:/config
+networks:
+  traefik:
+    external: true
+    name: traefik
+volumes:
+  config:
