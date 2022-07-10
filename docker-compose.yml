@@ -3,7 +3,7 @@ version: "3.9"
 
 services:
   tautulli:
-    image: lscr.io/linuxserver/tautulli:${TAUTULLI_TAG:-2.10.2}
+    image: lscr.io/linuxserver/tautulli:${TAUTULLI_TAG:-latest}
     environment:
       DOCKER_MODS: ${DOCKER_MODS:-linuxserver/mods:universal-stdout-logs}
       LOGS_TO_STDOUT: ${LOGS_TO_STDOUT:-/config/logs/tautulli.log}
